@@ -15,4 +15,5 @@ public class SubQuestions
     public string? SubquestionNumber { get; set; }
     public string? CommentSubquestion { get; set; }
     public string? SubquestionText { get; set; }
+    public ICollection<OptionQuestions>? OptionQuestions { get; set; }
 }

@@ -15,4 +15,6 @@ public class Surveys
     public string? Description { get; set; }
     public string? Instruction { get; set; }
     public string? Name { get; set; }
+
+    public ICollection<Chapters>? Chapters { get; set; }
 }

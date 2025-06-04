@@ -16,4 +16,6 @@ public class Chapters
     public string? ComponentReact { get; set; }
     public string? ChapterNumber { get; set; }
     public string? ChapterTitle { get; set; }
+
+    public ICollection<Questions>? Questions { get; set; }
 }

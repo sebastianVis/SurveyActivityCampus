@@ -16,4 +16,6 @@ public class Questions
     public string? ResponseType { get; set; }
     public string? CommentQuestion { get; set; }
     public string? QuestionText { get; set; }
+    public ICollection<OptionQuestions>? OptionQuestions { get; set; }
+    public ICollection<SubQuestions>? SubQuestions { get; set; }
 }
