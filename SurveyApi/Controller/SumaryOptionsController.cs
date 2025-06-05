@@ -37,4 +37,59 @@ public class SumaryOptionsController : BaseApiController
         }
         return Ok(summaryOption);
     }
+
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Post([FromBody] Domain.Entities.SumaryOption summaryOption)
+    {
+        if (summaryOption == null)
+        {
+            return BadRequest("SummaryOption cannot be null");
+        }
+
+        _unitOfWork.SumaryOptions.Add(summaryOption);
+        await _unitOfWork.SaveAsync();
+        return CreatedAtAction(nameof(Get), new { id = summaryOption.Id }, summaryOption);
+    }
+
+    [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Put(int id, [FromBody] Domain.Entities.SumaryOption summaryOption)
+    {
+        if (summaryOption == null || summaryOption.Id != id)
+        {
+            return BadRequest("SummaryOption cannot be null or ID mismatch");
+        }
+
+        var existingSummaryOption = await _unitOfWork.SumaryOptions.GetByIdAsync(id);
+        if (existingSummaryOption == null)
+        {
+            return NotFound();
+        }
+
+        _unitOfWork.SumaryOptions.Update(summaryOption);
+        await _unitOfWork.SaveAsync();
+        return NoContent();
+    }
+
+    [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var summaryOption = await _unitOfWork.SumaryOptions.GetByIdAsync(id);
+        if (summaryOption == null)
+        {
+            return NotFound();
+        }
+
+        _unitOfWork.SumaryOptions.Remove(summaryOption);
+        await _unitOfWork.SaveAsync();
+        return NoContent();
+    }
 }

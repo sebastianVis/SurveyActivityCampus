@@ -38,4 +38,58 @@ public class QuestionsController : BaseApiController
         return Ok(question);
     }
 
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Post([FromBody] Domain.Entities.Question question)
+    {
+        if (question == null)
+        {
+            return BadRequest("Question cannot be null");
+        }
+
+        _unitOfWork.Questions.Add(question);
+        await _unitOfWork.SaveAsync();
+        return CreatedAtAction(nameof(Get), new { id = question.Id }, question);
+    }
+
+    [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Put(int id, [FromBody] Domain.Entities.Question question)
+    {
+        if (question == null || question.Id != id)
+        {
+            return BadRequest("Question cannot be null or ID mismatch");
+        }
+
+        var existingQuestion = await _unitOfWork.Questions.GetByIdAsync(id);
+        if (existingQuestion == null)
+        {
+            return NotFound();
+        }
+
+        _unitOfWork.Questions.Update(question);
+        await _unitOfWork.SaveAsync();
+        return Ok(question);
+    }
+
+    [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var question = await _unitOfWork.Questions.GetByIdAsync(id);
+        if (question == null)
+        {
+            return NotFound();
+        }
+
+        _unitOfWork.Questions.Remove(question);
+        await _unitOfWork.SaveAsync();
+        return Ok();
+    }
 }

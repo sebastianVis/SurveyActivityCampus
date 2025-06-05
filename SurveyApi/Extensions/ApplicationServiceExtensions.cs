@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Application.Interface;
 using Infrastructure.Repositories;
+using Infrastructure.UnitOfWork;
 
 namespace SurveyApi.Extensions;
 
@@ -19,6 +20,6 @@ public static class ApplicationServiceExtensions
 
     public static void AddApplicationServices(this IServiceCollection services)
     {
-        services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+        services.AddScoped<IUnitOfWork, UnitOfWork>();
     }
 }

@@ -37,4 +37,59 @@ public class OptionQuestionsController : BaseApiController
         }
         return Ok(optionQuestion);
     }
+
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Post([FromBody] Domain.Entities.OptionQuestion optionQuestion)
+    {
+        if (optionQuestion == null)
+        {
+            return BadRequest("OptionQuestion cannot be null");
+        }
+
+        _unitOfWork.OptionQuestions.Add(optionQuestion);
+        await _unitOfWork.SaveAsync();
+        return CreatedAtAction(nameof(Get), new { id = optionQuestion.Id }, optionQuestion);
+    }
+
+    [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Put(int id, [FromBody] Domain.Entities.OptionQuestion optionQuestion)
+    {
+        if (optionQuestion == null || optionQuestion.Id != id)
+        {
+            return BadRequest("OptionQuestion cannot be null or ID mismatch");
+        }
+
+        var existingOptionQuestion = await _unitOfWork.OptionQuestions.GetByIdAsync(id);
+        if (existingOptionQuestion == null)
+        {
+            return NotFound();
+        }
+
+        _unitOfWork.OptionQuestions.Update(optionQuestion);
+        await _unitOfWork.SaveAsync();
+        return Ok(optionQuestion);
+    }
+
+    [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var optionQuestion = await _unitOfWork.OptionQuestions.GetByIdAsync(id);
+        if (optionQuestion == null)
+        {
+            return NotFound();
+        }
+
+        _unitOfWork.OptionQuestions.Remove(optionQuestion);
+        await _unitOfWork.SaveAsync();
+        return Ok();
+    }
 }

@@ -34,6 +34,58 @@ public class ChaptersController : BaseApiController
         }
         return Ok(chapter);
     }
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Post([FromBody] Domain.Entities.Chapter chapter)
+    {
+        if (chapter == null)
+        {
+            return BadRequest("Chapter cannot be null");
+        }
 
+        _unitOfWork.Chapters.Add(chapter);
+        await _unitOfWork.SaveAsync();
+        return CreatedAtAction(nameof(Get), new { id = chapter.Id }, chapter);
+    }
+    [HttpPut("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Put(int id, [FromBody] Domain.Entities.Chapter chapter)
+    {
+        if (chapter == null || chapter.Id != id)
+        {
+            return BadRequest("Chapter cannot be null or ID mismatch");
+        }
+
+        var existingChapter = await _unitOfWork.Chapters.GetByIdAsync(id);
+        if (existingChapter == null)
+        {
+            return NotFound();
+        }
+
+        _unitOfWork.Chapters.Update(chapter);
+        await _unitOfWork.SaveAsync();
+        return Ok(chapter);
+    }
+
+    [HttpDelete("{id}")]
+    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public async Task<IActionResult> Delete(int id)
+    {
+        var chapter = await _unitOfWork.Chapters.GetByIdAsync(id);
+        if (chapter == null)
+        {
+            return NotFound();
+        }
+
+        _unitOfWork.Chapters.Remove(chapter);
+        await _unitOfWork.SaveAsync();
+        return Ok();
+    }
 
 }
