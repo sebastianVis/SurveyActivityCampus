@@ -5,17 +5,16 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities;
 
-public class Chapters
+public class Survey
 {
     public int Id { get; set; }
     public DateTime CreatedAt { get; set; }
-    public int SurveyId { get; set; }
-    public Surveys? Survey { get; set; }
     public DateTime UpdatedAt { get; set; }
     public string? ComponentHtml { get; set; }
     public string? ComponentReact { get; set; }
-    public string? ChapterNumber { get; set; }
-    public string? ChapterTitle { get; set; }
+    public string? Description { get; set; }
+    public string? Instruction { get; set; }
+    public string? Name { get; set; }
 
-    public ICollection<Questions>? Questions { get; set; }
+    public ICollection<Chapter>? Chapters { get; set; }
 }

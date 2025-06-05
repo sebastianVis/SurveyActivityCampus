@@ -11,6 +11,6 @@ public class OptionsResponse
     public DateTime CreatedAt { get; set; }
     public DateTime UpdatedAt { get; set; }
     public string? OptionText { get; set; }
-    public ICollection<CategoryOptions>? CategoryOptions { get; set; }
-    public ICollection<OptionQuestions>? OptionQuestions { get; set; }
+    public ICollection<CategoryOption>? CategoryOptions { get; set; }
+    public ICollection<OptionQuestion>? OptionQuestions { get; set; }
 }

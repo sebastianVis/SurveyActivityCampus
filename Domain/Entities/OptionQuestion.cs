@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities;
 
-public class OptionQuestions
+public class OptionQuestion
 {
     public int Id { get; set; }
     public DateTime CreatedAt { get; set; }
@@ -14,9 +14,9 @@ public class OptionQuestions
     public int OptionCatalogId { get; set; }
     public CategoriesCatalog? CategoriesCatalog { get; set; }
     public int OptionQuestionId { get; set; }
-    public Questions? Questions { get; set; }
+    public Question? Questions { get; set; }
     public int SubquestionId { get; set; }
-    public SubQuestions? SubQuestions { get; set; }
+    public SubQuestion? SubQuestions { get; set; }
     public DateTime UpdatedAt { get; set; }
     public string? CommentOptionRes { get; set; }
     public string? NumberOption { get; set; }

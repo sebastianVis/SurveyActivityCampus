@@ -1,7 +1,12 @@
 using Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
+using SurveyApi.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.ConfigureCors();
+builder.Services.AddControllers();
+builder.Services.AddApplicationServices();
 
 // Add services to the container.
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
@@ -14,13 +19,14 @@ builder.Services.AddDbContext<SurveyDbContext>(options =>
 });
 
 var app = builder.Build();
-
+app.MapControllers();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 }
 
+app.UseCors("CorsPolicy");
 app.UseHttpsRedirection();
 
 

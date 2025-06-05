@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 
 namespace Domain.Entities;
 
-public class SumaryOptions
+public class SumaryOption
 {
     public int Id { get; set; }
     public int SurveyId { get; set; }
-    public Surveys? Survey { get; set; }
+    public Survey? Survey { get; set; }
     public string? CodeNumber { get; set; }
     public int QuestionId { get; set; }
     public string? Valuerta { get; set; }
